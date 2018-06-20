@@ -33,13 +33,14 @@ export class LoginPage {
     let headers = new HttpHeaders({ 'Content-Type': 'x-www-form-urlencoded' });
     let options = { headers: headers };
     let url = "http://localhost:8000/api/data";
-    //let response = this.http.get("url");
-    //console.log(response);
-    //return 0;
     let data = { data : '502f13a6a4bd7bdd30b2d78dd0a05677c098233e' }
-    let DATA = JSON.stringify(data);
+    let DATA = "data=whatever";
     let response = await this.http.post(url, DATA, options).toPromise();
-    console.log(response);
+    //console.log(response);
+    //let headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    //let options = { headers: headers };
+    //let response = await this.http.post(url, data, options).toPromise();
+    //console.log('API Response : ', response);
     /*
       .toPromise().then((response) => {
         console.log('API Response : ', response);
