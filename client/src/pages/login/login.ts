@@ -29,25 +29,12 @@ export class LoginPage {
   }
 
   async testing(){
-    //let response = await this.http.post(url, DATA, options).toPromise()
-    let headers = new HttpHeaders({ 'Content-Type': 'json' });
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let url = "http://localhost:8000/api/data";
-    let data = { "data" : "Nothing" };
+    let data = { info : "Nothing" };
     let response = await this.http.post(url, data, options).toPromise();
     console.log(response);
-    //let headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
-    //let options = { headers: headers };
-    //let response = await this.http.post(url, data, options).toPromise();
-    //console.log('API Response : ', response);
-    /*
-      .toPromise().then((response) => {
-        console.log('API Response : ', response);
-      })
-      .catch((error) => { 
-        console.error('API Error : ', error.status);
-      });
-    */
   }
 
   async testing2(){
@@ -55,8 +42,17 @@ export class LoginPage {
     console.log(response);
   }
 
+  async testing3(){
+    let headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    let options = { headers: headers };
+    let url = "http://localhost:8000/api/data";
+    let data = "info=Nothing";
+    let response = await this.http.post(url, data, options).toPromise();
+    console.log(response);
+  }
+
   postAjax(){
-    let DATA = "data=this_is_data_data";
+    let DATA = "info=this_is_data_data";
     let url = "http://localhost:8000/api/data";
     var xhr = new XMLHttpRequest();
     xhr.open('POST', url, true);

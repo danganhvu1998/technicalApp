@@ -36,7 +36,7 @@ class DataController extends Controller
     {   
         return ["result" => "successed"
             , "message" => "hi you"
-            , "data" => $request->data];
+            , "data" => $request->info];
     }
 
     /**
