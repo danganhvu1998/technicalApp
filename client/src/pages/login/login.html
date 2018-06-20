@@ -12,10 +12,40 @@
 
 
 <ion-content padding>
+  <!--Login-->
+  <h3 style="color:Chocolate;">Login</h3>
+  <ion-list>
+    <ion-item>
+      <ion-label floating>Email</ion-label>
+      <ion-input #loginUsername value={{autoUsername}} type="email"></ion-input>
+    </ion-item>
 
-	<button ion-button (click)=testing2() color="secondary" round full>GET TEST</button><br>
-	<button ion-button (click)=testing() color="danger" round full>POST TEST --- JSON</button><br>
-	<button ion-button (click)=testing3() color="danger" round full>POST TEST --- x-www-form-urlencoded</button><br>
-	<button ion-button (click)=postAjax() round full>PRIMITIVE POST METHOD</button><br>
+    <ion-item>
+      <ion-label floating>Password</ion-label>
+      <ion-input #loginPassword value={{autoPassword}} type="password"></ion-input>
+    </ion-item>
+  </ion-list>
+  <button ion-button (click)=login() color="secondary" round full>Login</button><br>
+
+
+  <!--Register-->
+  <h3 style="color:DarkGoldenRod;">Register</h3>
+  <ion-list>
+    <ion-item>
+      <ion-label floating>Email</ion-label>
+      <ion-input #regisUsername type="email"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Password</ion-label>
+      <ion-input #regisPassword type="password"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Retype Password</ion-label>
+      <ion-input #regisRePassword type="password"></ion-input>
+    </ion-item>
+  </ion-list>
+  <button ion-button (click)=register() color="danger" round full>Register For Free</button><br>
 
 </ion-content>

@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
+
+import { AuthenProvider } from '../../providers/authen/authen';
+import { InfoCenterProvider } from '../../providers/info-center/info-center';
 
 /**
  * Generated class for the LoginPage page.
@@ -15,54 +17,76 @@ import { Storage } from '@ionic/storage';
   selector: 'page-login',
   templateUrl: 'login.html',
 })
-export class LoginPage {
 
+export class LoginPage {
+  @ViewChild('loginUsername') loginUsername;
+  @ViewChild('loginPassword') loginPassword;
+  @ViewChild('regisUsername') regisUsername;
+  @ViewChild('regisPassword') regisPassword;
+  @ViewChild('regisRePassword') regisRePassword;
+
+  autoUsername = "danganhvu1998@gmail.com";
+  autoPassword = "davdav";
   constructor(
-  	public navCtrl: NavController,
-  	public navParams: NavParams,
-    public http: HttpClient,
-    public store: Storage) {
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    public authen:AuthenProvider,
+    public infoCenter: InfoCenterProvider,
+    ) {
   }
 
-  async ionViewDidLoad() {
+  ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
   }
 
-  async testing(){
-    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    let options = { headers: headers };
-    let url = "http://localhost:8000/api/data";
-    let data = { info : "Nothing" };
-    let response = await this.http.post(url, data, options).toPromise();
-    console.log(response);
+  validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
   }
 
-  async testing2(){
-    let response = await this.http.get("http://localhost:8000/api/data").toPromise();
-    console.log(response);
+  //********************************** LOGIN ONLY **********************************\\
+  async login(){
+    var email = this.loginUsername.value;
+    var password = this.loginPassword.value;
+    if( !this.validateEmail(email) ){
+      this.infoCenter.presentAlert('Email invalid');
+    } else {
+      var data = { email: email, password : password };
+      this.loginUserInform(await this.authen.login('api/users/login', data));
+    }
   }
 
-  async testing3(){
-    let headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
-    let options = { headers: headers };
-    let url = "http://localhost:8000/api/data";
-    let data = "info=Nothing";
-    let response = await this.http.post(url, data, options).toPromise();
-    console.log(response);
+  loginUserInform(response){
+    if(response.result==0){
+      this.infoCenter.presentAlert(response.error);
+    } else {
+      console.log("navCtrl activate");
+    }
   }
 
-  postAjax(){
-    let DATA = "info=this_is_data_data";
-    let url = "http://localhost:8000/api/data";
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', url, true);
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState>3 && xhr.status==200) {
-        console.log(JSON.parse(xhr.responseText));
-      }
-    };
-    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhr.send(DATA);
-    return xhr;
+  //********************************** REGISTER ONLY **********************************\\
+  async register(){
+    var email = this.regisUsername.value;
+    var password = this.regisPassword.value;
+    if(password!= this.regisRePassword.value){
+      this.infoCenter.presentAlert('Password is different')
+      return 0;
+    }
+    if( !this.validateEmail(email) ){
+      this.infoCenter.presentAlert('Email invalid');
+    } else {
+      var data = { email: email, password : password };
+      this.registerUserInform(await this.authen.register('api/users/register', data));
+    }
+  }
+
+  registerUserInform(response){
+    if(response.result==0){
+      this.infoCenter.presentAlert(response.error);
+    } else {
+      this.infoCenter.presentAlert("Register Successfully", "Please login to continue", "Cool!");
+      this.autoUsername = this.regisUsername.value;
+      this.autoPassword = this.regisPassword.value;
+    }
   }
 }
