@@ -30,13 +30,12 @@ export class LoginPage {
 
   async testing(){
     //let response = await this.http.post(url, DATA, options).toPromise()
-    let headers = new HttpHeaders({ 'Content-Type': 'x-www-form-urlencoded' });
+    let headers = new HttpHeaders({ 'Content-Type': 'json' });
     let options = { headers: headers };
     let url = "http://localhost:8000/api/data";
-    let data = { data : '502f13a6a4bd7bdd30b2d78dd0a05677c098233e' }
-    let DATA = "data=whatever";
-    let response = await this.http.post(url, DATA, options).toPromise();
-    //console.log(response);
+    let data = { "data" : "Nothing" };
+    let response = await this.http.post(url, data, options).toPromise();
+    console.log(response);
     //let headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
     //let options = { headers: headers };
     //let response = await this.http.post(url, data, options).toPromise();
@@ -62,9 +61,8 @@ export class LoginPage {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', url, true);
     xhr.onreadystatechange = function() {
-      console.log("Current status:", xhr.readyState, xhr.status);
       if (xhr.readyState>3 && xhr.status==200) {
-        console.log("result:",xhr.responseText);
+        console.log(JSON.parse(xhr.responseText));
       }
     };
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
