@@ -36,19 +36,22 @@ export class LoginPage {
     //let response = this.http.get("url");
     //console.log(response);
     //return 0;
-    let DATA = "data=502f13a6a4bd7bdd30b2d78dd0a05677c098233e";
     let data = { data : '502f13a6a4bd7bdd30b2d78dd0a05677c098233e' }
-    this.http.post(url, DATA, options)
+    let DATA = JSON.stringify(data);
+    let response = await this.http.post(url, DATA, options).toPromise();
+    console.log(response);
+    /*
       .toPromise().then((response) => {
         console.log('API Response : ', response);
       })
       .catch((error) => { 
         console.error('API Error : ', error.status);
       });
+    */
   }
 
   async testing2(){
-    let response = this.http.get("http://localhost:8000/api/data");
+    let response = await this.http.get("http://localhost:8000/api/data").toPromise();
     console.log(response);
   }
 
@@ -64,7 +67,6 @@ export class LoginPage {
       }
     };
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    //xhr.setRequestHeader("Content-type", "application/json");
     xhr.send(DATA);
     return xhr;
   }
