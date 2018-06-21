@@ -20,3 +20,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/users/login','AuthenController@login');
 Route::post('/users/register','AuthenController@register');
 Route::post('/users/token','AuthenController@token');
+Route::post('/users/change','AuthenController@change');
+
+Route::post('/data', 'DataController@dataStore');
+Route::get('/data/{id}', 'DataController@userData');
+Route::get('/data', 'DataController@index');
+Route::post('/data/edit', 'DataController@edit');

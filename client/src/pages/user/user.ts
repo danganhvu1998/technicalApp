@@ -1,5 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
+
+import { AuthenProvider } from '../../providers/authen/authen';
+import { InfoCenterProvider } from '../../providers/info-center/info-center';
+
+import { LoginPage } from '../login/login';
 
 /**
  * Generated class for the UserPage page.
@@ -15,11 +21,40 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class UserPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+	@ViewChild('userName') userName;
+  @ViewChild('userPass') userPass;
+  @ViewChild('password') password;
+
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    public authen:AuthenProvider,
+    public infoCenter: InfoCenterProvider,
+    public storage: Storage,
+    ) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UserPage');
   }
 
+  async changeInfo(){
+  	console.log(this.userName.value, this.userPass.value, this.password.value);
+    var userPass = this.userPass.value;
+    if(this.userPass.value==''){
+      userPass = this.password.value;
+    }
+    let data = {
+      id: this.infoCenter.userId,
+      password: this.password.value,
+      userName: this.userName.value,
+      userPass: userPass
+    }
+    let response = await this.authen.changeInfo(data);
+    if(response.result == 1){
+      this.navCtrl.setRoot(LoginPage);
+    } else {
+      this.infoCenter.presentAlert(response.error);
+    }
+  }
 }

@@ -48,4 +48,22 @@ class AuthenController extends Controller
 		$check->result = 1;
 		return $check;
     }
+
+    public function change(request $request){
+    	//Take out the user
+    	$check = User::where([
+    	 	['id', $request->id],
+    	 	['password', hash('ripemd160',$request->password)]
+    	 ])->first();
+		if($check==null){
+			return ["result" => 0, "error" => "Wrong Password"];
+		}
+		//Change user info
+		User::where('id', $request->id)->update([
+            //'remember_token' => hash('ripemd160',$request->userPass.strval(rand(0,2000000000))),
+            'name' => $request->userName,
+            'password' => hash('ripemd160',$request->userPass)
+        ]);
+        return ["result" => 1];
+    }
 }

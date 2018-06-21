@@ -20,13 +20,15 @@ export class InfoCenterProvider {
     console.log('Hello InfoCenterProvider Provider');
   }
 
-  hostUrl = "http://localhost:8000/";
+  hostUrl = "http://localhost:8000/api/";
   userId = 0;
   userEmail = "";
   userName = "";
   guestId = 0;
   guestEmail = "";
   guestName = "";
+  dataEditId = 0;
+  dataEditData = "";
 
   public presentAlert(title, body = "", button="OK"){
   	let alert = this.alertCtrl.create({

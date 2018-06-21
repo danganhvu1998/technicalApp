@@ -9,12 +9,36 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Global Data</ion-title>
+    <ion-title>Welcome - {{infoCenter.userName}}</ion-title>
   </ion-navbar>
 </ion-header>
 
 
-
 <ion-content padding>
+	  <ion-item>
+	    <ion-label floating>Data</ion-label>
+	    <ion-input #data type="text"></ion-input>
+	  </ion-item>
+	<button ion-button (click)=dataPoster() color="light" round full>POST DATA</button><br>
 
+  <div *ngFor='let data of dataArray'>
+    <ion-card>
+      <ion-card-header>
+        <p>{{data.data}}</p>
+        {{data.id}} --- {{data.userId}}
+      </ion-card-header>
+      <ion-card-content>
+        <button ion-button item-right clear small (click)=dataUserInfo(data.userId,data.userName) color="danger">
+            <ion-icon name="logo-reddit"></ion-icon>
+            {{data.userName}}
+        </button>
+        <span *ngIf='data.userId==infoCenter.userId'>
+          <button ion-button item-right clear small (click)=dataUserEdit(data.id,data.data)>
+            <ion-icon name="logo-reddit"></ion-icon>
+            Edit
+          </button>
+        </span>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>

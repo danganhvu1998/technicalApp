@@ -10,11 +10,14 @@ import { GlobalPage } from '../pages/global/global';
 import { HomePage } from '../pages/home/home';
 import { UserPage } from '../pages/user/user';
 import { LogoutPage } from '../pages/logout/logout';
+import { GuestHomePage } from '../pages/guest-home/guest-home';
+import { DataEditPage } from '../pages/data-edit/data-edit';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthenProvider } from '../providers/authen/authen';
 import { InfoCenterProvider } from '../providers/info-center/info-center';
+import { DataProvider } from '../providers/data/data';
 
 @NgModule({
   declarations: [
@@ -24,6 +27,8 @@ import { InfoCenterProvider } from '../providers/info-center/info-center';
     HomePage,
     GlobalPage,
     LogoutPage,
+    GuestHomePage,
+    DataEditPage,
   ],
   imports: [
     BrowserModule,
@@ -40,13 +45,16 @@ import { InfoCenterProvider } from '../providers/info-center/info-center';
     HomePage,
     GlobalPage,
     LogoutPage,
+    GuestHomePage,
+    DataEditPage,
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthenProvider,
-    InfoCenterProvider
+    InfoCenterProvider,
+    DataProvider
   ]
 })
 export class AppModule {}

@@ -36,8 +36,8 @@ export class LoginPage {
     public infoCenter: InfoCenterProvider,
     public storage: Storage,
     ) {
-  }
-
+  
+}
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
     this.tokenChecking();
@@ -46,6 +46,14 @@ export class LoginPage {
   validateEmail(email) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
+  }
+
+  saveUser(response){
+    this.infoCenter.userId = response.id;
+    this.infoCenter.userEmail = response.email;
+    this.infoCenter.userName = response.name;
+    this.storage.set('token', response.token);
+    this.navCtrl.setRoot(GlobalPage);
   }
 
   //********************************** LOGIN ONLY **********************************\\
@@ -64,10 +72,7 @@ export class LoginPage {
     if(response.result==0){
       this.infoCenter.presentAlert(response.error);
     } else {
-      this.infoCenter.userId = response.id;
-      this.infoCenter.userEmail = response.email;
-      this.storage.set('token', response.token);
-      this.navCtrl.setRoot(GlobalPage);
+      this.saveUser(response);
     }
   }
 
@@ -100,6 +105,7 @@ export class LoginPage {
   //********************************** TOKEN CHECKING ONLY **********************************\\
   async tokenChecking(){
     let token = await this.storage.get('token');
+    if(token == null) {return 0;}
     let data = {token: token};
     // Data return exactly same format as login
     this.tokenUserInform( await this.authen.tokenCheck(data) );
@@ -107,10 +113,7 @@ export class LoginPage {
 
   tokenUserInform(response){
     if(response.result==1){
-      this.infoCenter.userId = response.id;
-      this.infoCenter.userEmail = response.email;
-      this.storage.set('token', response.token);
-      this.navCtrl.setRoot(GlobalPage);
+      this.saveUser(response);
     }
   }
 }

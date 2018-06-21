@@ -7,6 +7,8 @@ import { GlobalPage } from '../pages/global/global';
 import { HomePage } from '../pages/home/home';
 import { UserPage } from '../pages/user/user';
 import { LogoutPage } from '../pages/logout/logout';
+import { GuestHomePage } from '../pages/guest-home/guest-home';
+import { DataEditPage } from '../pages/data-edit/data-edit';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';

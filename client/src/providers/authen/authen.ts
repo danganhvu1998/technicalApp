@@ -23,17 +23,22 @@ export class AuthenProvider {
   }
 
   public async login(data){
-    var url = 'api/users/login';
+    var url = 'users/login';
   	return await this.infoCenter.postData(url, data);
   }
 
   public async register(data){
-    var url = 'api/users/register';
+    var url = 'users/register';
     return await this.infoCenter.postData(url, data);
   }
 
   public async tokenCheck(data){
-    var url = 'api/users/token';
+    var url = 'users/token';
+    return await this.infoCenter.postData(url, data);
+  }
+
+  public async changeInfo(data){
+    var url = 'users/change';
     return await this.infoCenter.postData(url, data);
   }
 
