@@ -32,11 +32,14 @@ export class GuestHomePage {
     this.dataTaker();
   }
   //******************************** DataTaker ********************************\\
-  async dataTaker(){
-    let response = (await this.data.dataTaker(this.infoCenter.guestId));
-    console.log(response);
+  assignFunc(response){
     this.dataArray = response.data;
   }
+
+  async dataTaker(){
+    this.assignFunc(await this.data.dataTaker(this.infoCenter.guestId));
+  }
+
 
   dataUserInfo(id, guestName){
     console.log(id, guestName);

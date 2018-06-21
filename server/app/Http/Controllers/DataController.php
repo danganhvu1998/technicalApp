@@ -13,7 +13,7 @@ class DataController extends Controller
         $n = count($datas);
         $users = User::all();
         for ($i=0;$i<$n;$i++) {
-            $userName = User::where('id', $datas[$i]->userId)->first()->name;
+            $userName = $users[$datas[$i]->userId-1]->name;
             $datas[$i]->userName = $userName;
         }
         return $datas;
@@ -24,7 +24,7 @@ class DataController extends Controller
         $n = count($datas);
         $users = User::all();
         for ($i=0;$i<$n;$i++) {
-            $userName = User::where('id', $datas[$i]->userId)->first()->name;
+            $userName = $users[$datas[$i]->userId-1]->name;
             $datas[$i]->userName = $userName;
         }
         return $datas;

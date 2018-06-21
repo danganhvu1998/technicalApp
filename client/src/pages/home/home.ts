@@ -36,10 +36,12 @@ export class HomePage {
     this.dataTaker();
   }
   //******************************** DataTaker ********************************\\
-  async dataTaker(){
-    let response = (await this.data.dataTaker(this.infoCenter.userId));
-    console.log(response);
+  assignFunc(response){
     this.dataArray = response.data;
+  }
+
+  async dataTaker(){
+    this.assignFunc(await this.data.dataTaker(this.infoCenter.userId));
   }
 
   //******************************** DataPoster ********************************\\

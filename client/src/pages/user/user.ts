@@ -52,6 +52,7 @@ export class UserPage {
     }
     let response = await this.authen.changeInfo(data);
     if(response.result == 1){
+      this.infoCenter.presentAlert("Changed!");
       this.navCtrl.setRoot(LoginPage);
     } else {
       this.infoCenter.presentAlert(response.error);

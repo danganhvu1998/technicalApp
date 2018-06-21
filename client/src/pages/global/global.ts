@@ -38,10 +38,12 @@ export class GlobalPage {
     this.dataTaker();
   }
   //******************************** DataTaker ********************************\\
-  async dataTaker(){
-    let response = (await this.data.dataTaker());
-    console.log(response);
+  assignFunc(response){
     this.dataArray = response.data;
+  }
+
+  async dataTaker(){
+    this.assignFunc(await this.data.dataTaker());
   }
 
   //******************************** DataPoster ********************************\\
