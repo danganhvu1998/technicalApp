@@ -22,11 +22,18 @@ export class AuthenProvider {
     console.log('Hello AuthenProvider Provider');
   }
 
-  public async login(url, data){
+  public async login(data){
+    var url = 'api/users/login';
   	return await this.infoCenter.postData(url, data);
   }
 
-  public async register(url, data){
+  public async register(data){
+    var url = 'api/users/register';
+    return await this.infoCenter.postData(url, data);
+  }
+
+  public async tokenCheck(data){
+    var url = 'api/users/token';
     return await this.infoCenter.postData(url, data);
   }
 

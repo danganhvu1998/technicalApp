@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertController } from 'ionic-angular';
 import { Injectable } from '@angular/core';
+import { Storage } from '@ionic/storage';
 
 /*
   Generated class for the InfoCenterProvider provider.
@@ -14,11 +15,18 @@ export class InfoCenterProvider {
   constructor(
   	public http: HttpClient,
     public alertCtrl: AlertController,	
+    public storage: Storage,
   ) {
     console.log('Hello InfoCenterProvider Provider');
   }
 
   hostUrl = "http://localhost:8000/";
+  userId = 0;
+  userEmail = "";
+  userName = "";
+  guestId = 0;
+  guestEmail = "";
+  guestName = "";
 
   public presentAlert(title, body = "", button="OK"){
   	let alert = this.alertCtrl.create({

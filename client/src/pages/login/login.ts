@@ -5,6 +5,8 @@ import { Storage } from '@ionic/storage';
 import { AuthenProvider } from '../../providers/authen/authen';
 import { InfoCenterProvider } from '../../providers/info-center/info-center';
 
+import { GlobalPage } from '../global/global';
+
 /**
  * Generated class for the LoginPage page.
  *
@@ -32,11 +34,13 @@ export class LoginPage {
     public navParams: NavParams,
     public authen:AuthenProvider,
     public infoCenter: InfoCenterProvider,
+    public storage: Storage,
     ) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
+    this.tokenChecking();
   }
 
   validateEmail(email) {
@@ -52,7 +56,7 @@ export class LoginPage {
       this.infoCenter.presentAlert('Email invalid');
     } else {
       var data = { email: email, password : password };
-      this.loginUserInform(await this.authen.login('api/users/login', data));
+      this.loginUserInform(await this.authen.login(data));
     }
   }
 
@@ -60,7 +64,10 @@ export class LoginPage {
     if(response.result==0){
       this.infoCenter.presentAlert(response.error);
     } else {
-      console.log("navCtrl activate");
+      this.infoCenter.userId = response.id;
+      this.infoCenter.userEmail = response.email;
+      this.storage.set('token', response.token);
+      this.navCtrl.setRoot(GlobalPage);
     }
   }
 
@@ -76,7 +83,7 @@ export class LoginPage {
       this.infoCenter.presentAlert('Email invalid');
     } else {
       var data = { email: email, password : password };
-      this.registerUserInform(await this.authen.register('api/users/register', data));
+      this.registerUserInform(await this.authen.register(data));
     }
   }
 
@@ -87,6 +94,23 @@ export class LoginPage {
       this.infoCenter.presentAlert("Register Successfully", "Please login to continue", "Cool!");
       this.autoUsername = this.regisUsername.value;
       this.autoPassword = this.regisPassword.value;
+    }
+  }
+
+  //********************************** TOKEN CHECKING ONLY **********************************\\
+  async tokenChecking(){
+    let token = await this.storage.get('token');
+    let data = {token: token};
+    // Data return exactly same format as login
+    this.tokenUserInform( await this.authen.tokenCheck(data) );
+  }
+
+  tokenUserInform(response){
+    if(response.result==1){
+      this.infoCenter.userId = response.id;
+      this.infoCenter.userEmail = response.email;
+      this.storage.set('token', response.token);
+      this.navCtrl.setRoot(GlobalPage);
     }
   }
 }

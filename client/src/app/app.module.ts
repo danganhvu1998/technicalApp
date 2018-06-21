@@ -5,11 +5,11 @@ import { MyApp } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
 
-import { HelloIonicPage } from '../pages/hello-ionic/hello-ionic';
-import { ItemDetailsPage } from '../pages/item-details/item-details';
-import { ListPage } from '../pages/list/list';
 import { LoginPage } from '../pages/login/login'
-
+import { GlobalPage } from '../pages/global/global';
+import { HomePage } from '../pages/home/home';
+import { UserPage } from '../pages/user/user';
+import { LogoutPage } from '../pages/logout/logout';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -19,10 +19,11 @@ import { InfoCenterProvider } from '../providers/info-center/info-center';
 @NgModule({
   declarations: [
     MyApp,
-    HelloIonicPage,
-    ItemDetailsPage,
-    ListPage,
     LoginPage,
+    UserPage,
+    HomePage,
+    GlobalPage,
+    LogoutPage,
   ],
   imports: [
     BrowserModule,
@@ -33,10 +34,12 @@ import { InfoCenterProvider } from '../providers/info-center/info-center';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HelloIonicPage,
-    ItemDetailsPage,
-    ListPage,
     LoginPage,
+    LoginPage,
+    UserPage,
+    HomePage,
+    GlobalPage,
+    LogoutPage,
   ],
   providers: [
     StatusBar,

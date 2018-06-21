@@ -15,7 +15,6 @@ class AuthenController extends Controller
 		if($check==null){
 			return ["result" => 0, "error" => "Wrong Email or Password"];
 		}
-		//$regis->remember_token = hash('ripemd160',$request->password.strval(rand(0,2000000000)));
 		$check->token = hash('ripemd160',$request->password.strval(rand(0,2000000000)));
 		User::where('id', $check->id)->update([
                 'remember_token' => $check->token
@@ -36,4 +35,17 @@ class AuthenController extends Controller
     	$result = $regis->save();
     	return ["result" => 1];
     }    
+
+    public function token(request $request){
+    	$check = User::where('remember_token', $request->token)->first();
+		if($check==null){
+			return ["result" => 0, "error" => "Token not found"];
+		}
+		$check->token = hash('ripemd160',$request->token.strval(rand(0,2000000000)));
+		User::where('id', $check->id)->update([
+                'remember_token' => $check->token
+        ]);
+		$check->result = 1;
+		return $check;
+    }
 }
