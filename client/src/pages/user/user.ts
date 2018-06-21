@@ -38,6 +38,15 @@ export class UserPage {
     console.log('ionViewDidLoad UserPage');
   }
 
+  saveInfo(response){
+    if(response.result == 1){
+      this.infoCenter.presentAlert("Changed!");
+      this.navCtrl.setRoot(LoginPage);
+    } else {
+      this.infoCenter.presentAlert(response.error);
+    }
+  }
+
   async changeInfo(){
   	console.log(this.userName.value, this.userPass.value, this.password.value);
     var userPass = this.userPass.value;
@@ -51,11 +60,6 @@ export class UserPage {
       userPass: userPass
     }
     let response = await this.authen.changeInfo(data);
-    if(response.result == 1){
-      this.infoCenter.presentAlert("Changed!");
-      this.navCtrl.setRoot(LoginPage);
-    } else {
-      this.infoCenter.presentAlert(response.error);
-    }
+    this.saveInfo(response);
   }
 }
