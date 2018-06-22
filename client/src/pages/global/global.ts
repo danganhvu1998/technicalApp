@@ -48,6 +48,7 @@ export class GlobalPage {
 
   //******************************** DataPoster ********************************\\
   dataPosterUserInform(response){
+    console.log(response);
     if(response.result == true){
       this.infoCenter.presentAlert("Posted");
       this.dataTaker();

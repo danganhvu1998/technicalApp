@@ -3,8 +3,6 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
 import { InfoCenterProvider } from '../info-center/info-center';
-
-
 /*
   Generated class for the AuthenProvider provider.
 
@@ -13,6 +11,8 @@ import { InfoCenterProvider } from '../info-center/info-center';
 */
 @Injectable()
 export class AuthenProvider {
+
+  dataArray = [];
 
   constructor(
   	public http: HttpClient,
@@ -41,6 +41,5 @@ export class AuthenProvider {
     var url = 'users/change';
     return await this.infoCenter.postData(url, data);
   }
-
 
 }

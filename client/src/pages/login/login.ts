@@ -52,6 +52,7 @@ export class LoginPage {
     this.infoCenter.userId = response.id;
     this.infoCenter.userEmail = response.email;
     this.infoCenter.userName = response.name;
+    this.infoCenter.token = response.token;
     this.storage.set('token', response.token);
     this.navCtrl.setRoot(GlobalPage);
   }

@@ -29,6 +29,7 @@ export class InfoCenterProvider {
   guestName = "";
   dataEditId = 0;
   dataEditData = "";
+  token = "";
 
   public presentAlert(title, body = "", button="OK"){
   	let alert = this.alertCtrl.create({
