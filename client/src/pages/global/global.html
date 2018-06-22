@@ -32,7 +32,7 @@
             <ion-icon name="logo-reddit"></ion-icon>
             {{data.userName}}
         </button>
-        <span *ngIf='1==1'>
+        <span *ngIf='data.userId==infoCenter.userId'>
           <button ion-button item-right clear small (click)=dataUserEdit(data.id,data.data)>
             <ion-icon name="logo-reddit"></ion-icon>
             Edit

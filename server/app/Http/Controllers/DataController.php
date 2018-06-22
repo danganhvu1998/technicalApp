@@ -8,6 +8,7 @@ use App\User;
 
 class DataController extends Controller
 {   
+    //**********************  FUNCTION  **********************\\
     public function verifyUser($request, $idNeeded){
         $expiredTime = 604800;//One Week
         $check = User::where([
@@ -21,7 +22,7 @@ class DataController extends Controller
         } elseif ( (time() - strtotime($check->updated_at))>$expiredTime ) {
             return 0;
         }
-        //Remember last request
+        //Remember last request -> update updated_at
         User::where('id', $request->userId)->update([
             'remember_token' => $check->remember_token
         ]);
@@ -29,31 +30,36 @@ class DataController extends Controller
         return 1;
     }
 
-	public function index(){        
-		$datas = Data::orderBy('updated_at','desc')->paginate(20);
-        $n = count($datas);
-        $users = User::all();
-        for ($i=0;$i<$n;$i++) {
-            $userName = $users[$datas[$i]->userId-1]->name;
-            $datas[$i]->userName = $userName;
+    public function nameTag($datas, $users){
+        $nameSaver = array();
+        foreach($users as $user){
+            $nameSaver[$user->id] = $user->name;
         }
-        return $datas;
-	}
-
-    public function userData($id){
-        $datas = Data::where('userId',$id)->orderBy('updated_at','desc')->paginate(20);
         $n = count($datas);
-        $users = User::all();
         for ($i=0;$i<$n;$i++) {
-            $userName = $users[$datas[$i]->userId-1]->name;
+            $userName = $nameSaver[$datas[$i]->userId];
             $datas[$i]->userName = $userName;
         }
         return $datas;
     }
 
+
+    //**********************  ROUTE  **********************\\
+	public function index(){        
+		$datas = Data::orderBy('updated_at','desc')->paginate(20);
+        $users = User::all();
+        return $this->nameTag($datas, $users);
+	}
+
+    public function userData($id){
+        $datas = Data::where('userId',$id)->orderBy('updated_at','desc')->paginate(20);
+        $users = User::all();
+        return $this->nameTag($datas, $users);        
+    }
+
     public function dataStore(Request $request){
         if ($this->verifyUser($request, $request->userId)==0){
-            return ["result" => 2, "error" => "Unable to verify user"];
+            return ["result" => 0, "error" => "Unable to verify user"];
         }
     	$data = new Data;
     	$data->data = $request->data;
@@ -64,17 +70,12 @@ class DataController extends Controller
 
     public function edit(request $request){
         $data = Data::where('id', $request->id)->first();
-        //return ["result" => $this->verifyUser($request, $data->userId), "ID needed" => $data->userId, ];
         if ($this->verifyUser($request, $data->userId)==0){
-            return ["result" => 2, "error" => "Unable to verify user"];
+            return ["result" => 0, "error" => "Unable to verify user"];
         }
         Data::where('id', $request->id)->update([
             'data' => $request->data
         ]);
         return ["result" => 1];
-    }
-
-    public function clientIp(request $request){
-        return ["clientIp" => $request->ip()];
     }
 }
