@@ -37,10 +37,14 @@ class AuthenController extends Controller
     }    
 
     public function token(request $request){
+        $expiredTime = 604800;//One Week
     	$check = User::where('remember_token', $request->token)->first();
 		if($check==null){
 			return ["result" => 0, "error" => "Token not found"];
 		}
+        if((time() - strtotime($check->updated_at))>$expiredTime){
+            return ["result" => 0, "error" => "Token not found"];   
+        }
 		$check->token = hash('ripemd160',$request->token.strval(rand(0,2000000000)));
 		User::where('id', $check->id)->update([
                 'remember_token' => $check->token

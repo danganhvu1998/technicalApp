@@ -37,8 +37,9 @@ class DataController extends Controller
         }
         $n = count($datas);
         for ($i=0;$i<$n;$i++) {
-            $userName = $nameSaver[$datas[$i]->userId];
-            $datas[$i]->userName = $userName;
+            $datas[$i]->userName = $nameSaver[$datas[$i]->userId];
+            //$userName = $nameSaver[$datas[$i]->userId];
+            //$datas[$i]->userName = $userName;
         }
         return $datas;
     }
@@ -47,13 +48,21 @@ class DataController extends Controller
     //**********************  ROUTE  **********************\\
 	public function index(){        
 		$datas = Data::orderBy('updated_at','desc')->paginate(20);
-        $users = User::all();
+        $idNeedName = array();
+        foreach($datas as $data){
+            array_push($idNeedName, $data->userId);
+        }
+        $users = User::whereIn('id', $idNeedName)->get();
         return $this->nameTag($datas, $users);
 	}
 
     public function userData($id){
         $datas = Data::where('userId',$id)->orderBy('updated_at','desc')->paginate(20);
-        $users = User::all();
+        $idNeedName = array();
+        foreach($datas as $data){
+            array_push($idNeedName, $data->userId);
+        }
+        $users = User::whereIn('id', $idNeedName)->get();
         return $this->nameTag($datas, $users);        
     }
 
