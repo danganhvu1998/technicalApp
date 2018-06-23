@@ -1,5 +1,6 @@
 # technicalApp
 #Client Side: IONIC 3.1.10
+
     cli packages: (/usr/lib/node_modules)
 
         @ionic/cli-utils  : 1.19.2
