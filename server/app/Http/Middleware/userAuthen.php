@@ -31,7 +31,7 @@ class userAuthen
         }
         //Remember last request -> update updated_at
         User::where('id', $request->userId)->update([
-            'remember_token' => $check->ryfs9aufysodufysaodfuysoaiufysouidfydsoufiysdemember_token
+            'remember_token' => $check->remember_token
         ]);
         //User Confirmed
         return $next($request);
