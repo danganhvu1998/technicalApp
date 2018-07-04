@@ -1,5 +1,5 @@
 # technicalApp
-#Client Side: IONIC 3.1.10
+# Client Side: IONIC 3.1.10
 
     cli packages: (/usr/lib/node_modules)
 
@@ -30,9 +30,11 @@
 
         backend : pro
 
-#Server Side: Laravel Framework 5.6.25
+# Server Side: Laravel Framework 5.6.25
 
-#A normal student practicing here
+# A normal student practicing here
+
+# Testing Laravel Middleware
 
 #Testing Laravel Middleware
 
