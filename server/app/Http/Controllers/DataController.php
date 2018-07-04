@@ -9,6 +9,7 @@ use App\User;
 class DataController extends Controller
 {   
     //**********************  FUNCTION  **********************\\
+    /*
     public function verifyUser($request, $idNeeded){
         $expiredTime = 604800;//One Week
         $check = User::where([
@@ -28,7 +29,7 @@ class DataController extends Controller
         ]);
         //User Confirmed
         return 1;
-    }
+    }*/
 
     public function nameTag($datas, $users){
         $nameSaver = array();
@@ -67,9 +68,6 @@ class DataController extends Controller
     }
 
     public function dataStore(Request $request){
-        if ($this->verifyUser($request, $request->userId)==0){
-            return ["result" => 0, "error" => "Unable to verify user"];
-        }
     	$data = new Data;
     	$data->data = $request->data;
     	$data->userId = $request->userId;
@@ -78,10 +76,9 @@ class DataController extends Controller
     }
 
     public function edit(request $request){
+        if($request->rejected==1) return ["result" => 0, "error" => "Unable to verify user"];
         $data = Data::where('id', $request->id)->first();
-        if ($this->verifyUser($request, $data->userId)==0){
-            return ["result" => 0, "error" => "Unable to verify user"];
-        }
+        if( $data->userId != $request->userId ) return ["result" => 0, "error" => "Unable to verify user"];
         Data::where('id', $request->id)->update([
             'data' => $request->data
         ]);

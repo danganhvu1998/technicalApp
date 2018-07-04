@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\User;
+use App\Data;
 
 class userAuthen
 {
@@ -16,18 +17,18 @@ class userAuthen
      */
     public function handle($request, Closure $next)
     {   
-        $rejectResult = ["result" => 0, "error" => "Unable to verify user"];
+        $request->rejected = 0;
         $expiredTime = 604800;//One Week
         $check = User::where([
             ['id', $request->userId],
             ['remember_token', $request->token]
         ])->first();
         if($check==null){
-            return $rejectResult;
-        } elseif($request->userId!=$idNeeded){
-            return $rejectResult;
+            $request->rejected = 1;
+            return $next($request);
         } elseif ( (time() - strtotime($check->updated_at))>$expiredTime ) {
-            return $rejectResult;
+            $request->rejected = 1;
+            return $next($request);
         }
         //Remember last request -> update updated_at
         User::where('id', $request->userId)->update([
@@ -37,25 +38,3 @@ class userAuthen
         return $next($request);
     }
 }
-
-/*
-public function verifyUser($request, $idNeeded){
-        $expiredTime = 604800;//One Week
-        $check = User::where([
-            ['id', $request->userId],
-            ['remember_token', $request->token]
-        ])->first();
-        if($check==null){
-            return $rejectResult;
-        } elseif($request->userId!=$idNeeded){
-            return $rejectResult;
-        } elseif ( (time() - strtotime($check->updated_at))>$expiredTime ) {
-            return $rejectResult;
-        }
-        //Remember last request -> update updated_at
-        User::where('id', $request->userId)->update([
-            'remember_token' => $check->remember_token
-        ]);
-        //User Confirmed
-        return 1;
-    }
