@@ -28,9 +28,9 @@
         {{data.id}} --- {{data.userId}}
       </ion-card-header>
       <ion-card-content>
-        <button ion-button item-right clear small (click)=dataUserInfo(data.userId,data.userName) color="danger">
+        <button ion-button item-right clear small (click)=dataUserInfo(data.userId,data.name) color="danger">
             <ion-icon name="logo-reddit"></ion-icon>
-            {{data.userName}}
+            {{data.name}}
         </button>
         <span *ngIf='data.userId==infoCenter.userId'>
           <button ion-button item-right clear small (click)=dataUserEdit(data.id,data.data)>

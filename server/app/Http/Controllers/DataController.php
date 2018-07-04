@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Data;
 use App\User;
@@ -9,27 +10,7 @@ use App\User;
 class DataController extends Controller
 {   
     //**********************  FUNCTION  **********************\\
-    /*
-    public function verifyUser($request, $idNeeded){
-        $expiredTime = 604800;//One Week
-        $check = User::where([
-            ['id', $request->userId],
-            ['remember_token', $request->token]
-        ])->first();
-        if($check==null){
-            return 0;
-        } elseif($request->userId!=$idNeeded){
-            return 0;
-        } elseif ( (time() - strtotime($check->updated_at))>$expiredTime ) {
-            return 0;
-        }
-        //Remember last request -> update updated_at
-        User::where('id', $request->userId)->update([
-            'remember_token' => $check->remember_token
-        ]);
-        //User Confirmed
-        return 1;
-    }*/
+
 
     public function nameTag($datas, $users){
         $nameSaver = array();
@@ -48,23 +29,29 @@ class DataController extends Controller
 
     //**********************  ROUTE  **********************\\
 	public function index(){        
-		$datas = Data::orderBy('updated_at','desc')->paginate(20);
-        $idNeedName = array();
-        foreach($datas as $data){
-            array_push($idNeedName, $data->userId);
-        }
-        $users = User::whereIn('id', $idNeedName)->get();
-        return $this->nameTag($datas, $users);
+		//$datas = Data::orderBy('updated_at','desc')->paginate(20);
+        //$idNeedName = array();
+        //foreach($datas as $data){
+        //    array_push($idNeedName, $data->userId);
+        //}
+        //$users = User::whereIn('id', $idNeedName)->get();
+        $datas = DB::table('data')
+            ->orderBy('updated_at','desc')
+            ->leftjoin('users', 'data.userId', '=', 'users.id')
+            ->select('data.*', 'users.name')
+            ->paginate(20);
+        return $datas;
 	}
 
     public function userData($id){
-        $datas = Data::where('userId',$id)->orderBy('updated_at','desc')->paginate(20);
-        $idNeedName = array();
-        foreach($datas as $data){
-            array_push($idNeedName, $data->userId);
-        }
-        $users = User::whereIn('id', $idNeedName)->get();
-        return $this->nameTag($datas, $users);        
+        //$datas = Data::where('userId',$id)->orderBy('updated_at','desc')->paginate(20);
+        $datas = DB::table('data')
+            ->where('userId',$id)
+            ->orderBy('updated_at','desc')
+            ->leftjoin('users', 'data.userId', '=', 'users.id')
+            ->select('data.*', 'users.name')
+            ->paginate(20);
+        return $datas;      
     }
 
     public function dataStore(Request $request){
