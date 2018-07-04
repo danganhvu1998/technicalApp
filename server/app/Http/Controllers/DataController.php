@@ -37,7 +37,7 @@ class DataController extends Controller
         //$users = User::whereIn('id', $idNeedName)->get();
         $datas = DB::table('data')
             ->orderBy('updated_at','desc')
-            ->leftjoin('users', 'data.userId', '=', 'users.id')
+            ->join('users', 'data.userId', '=', 'users.id')
             ->select('data.*', 'users.name')
             ->paginate(20);
         return $datas;
@@ -48,13 +48,14 @@ class DataController extends Controller
         $datas = DB::table('data')
             ->where('userId',$id)
             ->orderBy('updated_at','desc')
-            ->leftjoin('users', 'data.userId', '=', 'users.id')
+            ->join('users', 'data.userId', '=', 'users.id')
             ->select('data.*', 'users.name')
             ->paginate(20);
         return $datas;      
     }
 
     public function dataStore(Request $request){
+        if($request->rejected==1) return ["result" => 0, "error" => "Unable to verify user"];
     	$data = new Data;
     	$data->data = $request->data;
     	$data->userId = $request->userId;
