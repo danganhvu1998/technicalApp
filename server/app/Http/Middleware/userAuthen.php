@@ -24,11 +24,13 @@ class userAuthen
             ['remember_token', $request->token]
         ])->first();
         if($check==null){
-            $request->rejected = 1;
-            return $next($request);
+            return ["result" => 0, "error" => "Unable to verify user"];
+            //$request->rejected = 1;
+            //return $next($request);
         } elseif ( (time() - strtotime($check->updated_at))>$expiredTime ) {
-            $request->rejected = 1;
-            return $next($request);
+            return ["result" => 0, "error" => "Unable to verify user"];
+            //$request->rejected = 1;
+            //return $next($request);
         }
         //Remember last request -> update updated_at
         User::where('id', $request->userId)->update([
